@@ -92,16 +92,6 @@ rm -rf cards && mkdir cards
 # Create cards for ORG1
 PRIVATE_KEY="${DIR}"/composer/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/"${ORG1KEY}"
 CERT="${DIR}"/composer/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
-
-# ORG1-ONLY
-if composer card list -c PeerAdmin@org1-only > /dev/null; then
-    composer card delete -c PeerAdmin@org1-only
-fi
-CARDOUTPUT=cards/PeerAdmin@org1-only.card
-"${HL_COMPOSER_CLI}"  card create -p connection-profiles/org1-only.json -u PeerAdmin -c "${CERT}" -k "${PRIVATE_KEY}" -r PeerAdmin -r ChannelAdmin --file ${CARDOUTPUT}
-"${HL_COMPOSER_CLI}"  card import --file ${CARDOUTPUT} --card PeerAdmin@org1-only
-
-# ORG1
 if composer card list -c PeerAdmin@org1 > /dev/null; then
     composer card delete -c PeerAdmin@org1
 fi
@@ -113,23 +103,12 @@ CARDOUTPUT=cards/PeerAdmin@org1.card
 # Create cards for ORG2
 PRIVATE_KEY="${DIR}"/composer/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/"${ORG2KEY}"
 CERT="${DIR}"/composer/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
-
-# ORG2-ONLY
-if composer card list -c PeerAdmin@org2-only > /dev/null; then
-    composer card delete -c PeerAdmin@org2-only
-fi
-CARDOUTPUT=cards/PeerAdmin@org2-only.card
-"${HL_COMPOSER_CLI}"  card create -p connection-profiles/org2-only.json -u PeerAdmin -c "${CERT}" -k "${PRIVATE_KEY}" -r PeerAdmin -r ChannelAdmin --file ${CARDOUTPUT}
-"${HL_COMPOSER_CLI}"  card import --file ${CARDOUTPUT} --card PeerAdmin@org2-only
-
-# ORG2
 if composer card list -c PeerAdmin@org2 > /dev/null; then
     composer card delete -c PeerAdmin@org2
 fi
 CARDOUTPUT=cards/PeerAdmin@org2.card
 "${HL_COMPOSER_CLI}"  card create -p connection-profiles/org2.json -u PeerAdmin -c "${CERT}" -k "${PRIVATE_KEY}" -r PeerAdmin -r ChannelAdmin --file ${CARDOUTPUT}
 "${HL_COMPOSER_CLI}"  card import --file ${CARDOUTPUT} --card PeerAdmin@org2
-
 
 # List all the cards imported
 "${HL_COMPOSER_CLI}" card list

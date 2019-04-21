@@ -23,76 +23,25 @@ HOST1="127.0.0.1"
 HOST2="192.168.1.250"
 
 # Copy the templates and replace the place holders with actual IP address
-
 cp "${DIR}"/templates/configtx-template.yaml "${DIR}"/configtx.yaml
 sed -i -e "s/{IP-HOST-1}/$HOST1/g" "${DIR}"/configtx.yaml
 
+# Build startFabric script for hosts
 cp ../startFabric-host-template.sh ../startFabric-host2.sh
 sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/startFabric-host2/g" ../startFabric-host2.sh
 sed -i -e "s/{IP-HOST-1}/$HOST1/g" ../startFabric-host2.sh
 
+# Build stopFabric script for hosts
+cp ../stopFabric-host-template.sh ../stopFabric-host2.sh
+sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/stopFabric-host2/g" ../stopFabric-host2.sh
+
+# Build teardownFabric script for hosts
+cp ../teardownFabric-host-template.sh ../teardownFabric-host2.sh
+sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/teardownFabric-host2/g" ../teardownFabric-host2.sh
+
+
 # Generate connection profiles
 rm -f ../connection-profiles/*
-
-# Connection profile for ORG1 only
-cat << EOF > ../connection-profiles/org1-only.json
-{
-    "name": "org1-only",
-    "x-type": "hlfv1",
-    "x-commitTimeout": 300,
-    "version": "1.0.0",
-    "client": {
-        "organization": "Org1",
-        "connection": {
-            "timeout": {
-                "peer": {
-                    "endorser": "300",
-                    "eventHub": "300",
-                    "eventReg": "300"
-                },
-                "orderer": "300"
-            }
-        }
-    },
-    "channels": {
-        "composerchannel": {
-            "orderers": [
-                "orderer.example.com"
-            ],
-            "peers": {
-                "peer0.org1.example.com": {}
-            }
-        }
-    },
-    "organizations": {
-        "Org1": {
-            "mspid": "Org1MSP",
-            "peers": [
-                "peer0.org1.example.com"
-            ],
-            "certificateAuthorities": [
-                "ca.org1.example.com"
-            ]
-        }
-    },
-    "orderers": {
-        "orderer.example.com": {
-            "url": "grpc://localhost:7050"
-        }
-    },
-    "peers": {
-        "peer0.org1.example.com": {
-            "url": "grpc://localhost:7051"
-        }
-    },
-    "certificateAuthorities": {
-        "ca.org1.example.com": {
-            "url": "http://localhost:7054",
-            "caName": "ca.org1.example.com"
-        }
-    }
-}
-EOF
 
 # Connection profile for ORG1
 cat << EOF > ../connection-profiles/org1.json
@@ -166,71 +115,6 @@ cat << EOF > ../connection-profiles/org1.json
         "ca.org1.example.com": {
             "url": "http://localhost:7054",
             "caName": "ca.org1.example.com"
-        }
-    }
-}
-EOF
-
-# Connection profile for ORG2 only
-cat << EOF > ../connection-profiles/org2-only.json
-{
-    "name": "org2-only",
-    "x-type": "hlfv1",
-    "x-commitTimeout": 300,
-    "version": "1.0.0",
-    "client": {
-        "organization": "Org2",
-        "connection": {
-            "timeout": {
-                "peer": {
-                    "endorser": "300",
-                    "eventHub": "300",
-                    "eventReg": "300"
-                },
-                "orderer": "300"
-            }
-        }
-    },
-    "channels": {
-        "composerchannel": {
-            "orderers": [
-                "orderer.example.com"
-            ],
-            "peers": {
-                "peer0.org2.example.com": {},
-                "peer1.org2.example.com": {}
-            }
-        }
-    },
-    "organizations": {
-        "Org2": {
-            "mspid": "Org2MSP",
-            "peers": [
-                "peer0.org2.example.com",
-                "peer1.org2.example.com"
-            ],
-            "certificateAuthorities": [
-                "ca.org2.example.com"
-            ]
-        }
-    },
-    "orderers": {
-        "orderer.example.com": {
-            "url": "grpc://localhost:7050"
-        }
-    },
-    "peers": {
-        "peer0.org2.example.com": {
-            "url": "grpc://${HOST2}:7051"
-        },
-        "peer1.org2.example.com": {
-            "url": "grpc://${HOST2}:7051"
-        }
-    },
-    "certificateAuthorities": {
-        "ca.org2.example.com": {
-            "url": "http://${HOST2}:7054",
-            "caName": "ca.org2.example.com"
         }
     }
 }
