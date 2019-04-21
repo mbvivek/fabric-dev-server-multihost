@@ -27,7 +27,7 @@ HOST2="192.168.1.250"
 cp "${DIR}"/templates/configtx-template.yaml "${DIR}"/configtx.yaml
 sed -i -e "s/{IP-HOST-1}/$HOST1/g" "${DIR}"/configtx.yaml
 
-cp ../startFabric-slave-template.sh ../startFabric-host2.sh
+cp ../startFabric-host-template.sh ../startFabric-host2.sh
 sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/startFabric-host2/g" ../startFabric-host2.sh
 sed -i -e "s/{IP-HOST-1}/$HOST1/g" ../startFabric-host2.sh
 

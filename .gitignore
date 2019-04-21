@@ -1,7 +1,8 @@
-
-**/composer-logs/*
 /bin
 /cards
-/connection-profiles/*
+/startFabric-host*.sh
+!/startFabric-host-template.sh
+/stopFabric-host*.sh
+/teardownFabric-host*.sh
 /composer/crypto-config
-/composer/yaml
+/composer/configtx.yaml
