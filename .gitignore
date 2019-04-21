@@ -1,0 +1,6 @@
+
+**/composer-logs/*
+/bin
+/cards
+/connection-profiles
+/composer/yaml
