@@ -24,7 +24,7 @@ HOST2="192.168.1.250"
 
 # Copy the templates and replace the place holders with actual IP address
 
-cp "${DIR}"/configtx-template.yaml "${DIR}"/configtx.yaml
+cp "${DIR}"/templates/configtx-template.yaml "${DIR}"/configtx.yaml
 sed -i -e "s/{IP-HOST-1}/$HOST1/g" "${DIR}"/configtx.yaml
 
 cp ../startFabric-slave-template.sh ../startFabric-host2.sh
@@ -324,10 +324,10 @@ ORG2KEY="$(ls crypto-config/peerOrganizations/org2.example.com/ca/ | grep 'sk$')
 echo "ORG1KEY = ${ORG1KEY}"
 echo "ORG2KEY = ${ORG2KEY}"
 
-cp docker-compose-master-template.yml docker-compose-host1.yml
+cp templates/docker-compose-master-template.yml docker-compose-host1.yml
 sed -i -e "s/{ORG1-CA-KEY}/$ORG1KEY/g" "$(pwd)"/docker-compose-host1.yml
 
-cp docker-compose-slave-template.yml docker-compose-host2.yml
+cp templates/docker-compose-slave-template.yml docker-compose-host2.yml
 sed -i -e "s/{ORG2-CA-KEY}/$ORG2KEY/g" "$(pwd)"/docker-compose-host2.yml
 
 rm -f *-e

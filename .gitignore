@@ -2,6 +2,6 @@
 **/composer-logs/*
 /bin
 /cards
-/connection-profiles
+/connection-profiles/*
 /composer/crypto-config
 /composer/yaml
