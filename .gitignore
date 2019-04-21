@@ -3,4 +3,5 @@
 /bin
 /cards
 /connection-profiles
+/composer/crypto-config
 /composer/yaml

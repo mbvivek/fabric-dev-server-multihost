@@ -13,7 +13,10 @@
 # limitations under the License.
 
 # Exit on first error, print all commands.
-set -e
+set -ev
+
+# Stop any running fabric
+./stopFabric-master.sh && ./teardownFabric-master.sh
 
 Usage() {
 	echo ""
@@ -50,22 +53,24 @@ fi
 # Grab the current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-DOCKER_FILE="${DIR}"/composer/startFabric-host2.yml
+DOCKER_FILE="${DIR}"/composer/docker-compose-host1.yml
 
 docker-compose -f "${DOCKER_FILE}" down
 docker-compose -f "${DOCKER_FILE}" up -d
 
 # wait for Hyperledger Fabric to start
 # incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
+FABRIC_START_TIMEOUT=10
 echo "sleeping for ${FABRIC_START_TIMEOUT} seconds to wait for fabric to complete start up"
 sleep ${FABRIC_START_TIMEOUT}
 
-# Fetch the channel for peer0.org2.example.com
-docker exec -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org2.example.com/msp" peer0.org2.example.com peer channel fetch config -o 127.0.0.1:7050 -c composerchannel
-# Join peer0.org2.example.com to the channel
-docker exec -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org2.example.com/msp" peer0.org2.example.com peer channel join -b composerchannel_config.block
+# Create the channel
+echo "Creating the channel for peer0.org1.example.com"
+docker exec peer0.org1.example.com peer channel create -o orderer.example.com:7050 -c composerchannel -f /etc/hyperledger/configtx/composer-channel.tx
 
-# Fetch the channel for peer1.org2.example.com
-docker exec -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org2.example.com/msp" peer1.org2.example.com peer channel fetch config -o 127.0.0.1:7050 -c composerchannel
-# Join peer1.org2.example.com to the channel
-docker exec -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org2.example.com/msp" peer1.org2.example.com peer channel join -b composerchannel_config.block
+echo "Joining peer0.org1.example.com to the channel"
+# Join peer0.org1.example.com to the channel.
+docker exec -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel join -b composerchannel.block
+
+echo "Fabric started..."
+docker ps
