@@ -9,13 +9,13 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca.org2.example.com
     ports:
       - 8054:7054
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/41ab29d840d97a665280e61514ae3068805334abfc70accfb9b4b7adb3c9dd9a_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/3159e0332ab6009ddb4cf3645ce6d7b4a3769e315dcef5ac65d8de362f86d08a_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
     extra_hosts:
-      - "ca.org1.example.com:127.0.0.1"
-      - "orderer.example.com:127.0.0.1"
-      - "peer0.org1.example.com:127.0.0.1"
+      - "ca.org1.example.com:18.216.52.239"
+      - "orderer.example.com:18.216.52.239"
+      - "peer0.org1.example.com:18.216.52.239"
 
   peer0.org2.example.com:
     container_name: peer0.org2.example.com
@@ -43,9 +43,9 @@ services:
       - ./crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/peer/msp
       - ./crypto-config/peerOrganizations/org2.example.com/users:/etc/hyperledger/msp/users
     extra_hosts:
-      - "ca.org1.example.com:127.0.0.1"
-      - "orderer.example.com:127.0.0.1"
-      - "peer0.org1.example.com:127.0.0.1"
+      - "ca.org1.example.com:18.216.52.239"
+      - "orderer.example.com:18.216.52.239"
+      - "peer0.org1.example.com:18.216.52.239"
     depends_on:
       - couchdb1
 
@@ -83,9 +83,9 @@ services:
       - ./crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/peer/msp
       - ./crypto-config/peerOrganizations/org2.example.com/users:/etc/hyperledger/msp/users
     extra_hosts:
-      - "ca.org1.example.com:127.0.0.1"
-      - "orderer.example.com:127.0.0.1"
-      - "peer0.org1.example.com:127.0.0.1"
+      - "ca.org1.example.com:18.216.52.239"
+      - "orderer.example.com:18.216.52.239"
+      - "peer0.org1.example.com:18.216.52.239"
     depends_on:
       - couchdb2
 

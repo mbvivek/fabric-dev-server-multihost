@@ -19,8 +19,8 @@ rm -rf crypto-config
 cryptogen generate --config=./crypto-config.yaml
 
 # Set public IP addresses host machines
-HOST1="127.0.0.1"
-HOST2="127.0.0.1"
+HOST1="18.216.52.239"
+HOST2="18.222.110.151"
 
 # Copy the templates and replace the place holders with actual IP address
 cp "${DIR}"/templates/configtx-template.yaml "${DIR}"/configtx.yaml

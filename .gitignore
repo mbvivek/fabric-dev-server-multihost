@@ -1,3 +1,2 @@
 /bin
-/cards
-/composer/crypto-config
+/cards/*
