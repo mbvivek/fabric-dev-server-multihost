@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Exit on first error, print all commands.
-set -ev
+set -e
 
 # Stop any running fabric
 ./stopFabric-master.sh && ./teardownFabric-master.sh

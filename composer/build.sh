@@ -1,7 +1,7 @@
 # Run this script before starting fabric
 
 # exit on 1st error
-set -ev
+set -e
 
 # Grab the current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

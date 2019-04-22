@@ -176,7 +176,7 @@ Application: &ApplicationDefaults
         # ACL policy for chaincode to chaincode invocation
         peer/ChaincodeToChaincode: /Channel/Application/Readers
 
-        #---Events resource to policy mapping for access control###---#
+        #---eents resource to policy mapping for access control###---#
 
         # ACL policy for sending block events
         event/Block: /Channel/Application/Readers
