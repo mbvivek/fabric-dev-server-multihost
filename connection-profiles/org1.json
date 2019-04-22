@@ -59,10 +59,10 @@
             "url": "grpc://localhost:7051"
         },
         "peer0.org2.example.com": {
-            "url": "grpc://localhost:8051"
+            "url": "grpc://127.0.0.1:8051"
         },
         "peer1.org2.example.com": {
-            "url": "grpc://localhost:9051"
+            "url": "grpc://127.0.0.1:9051"
         }
     },
     "certificateAuthorities": {
