@@ -1,18 +1,18 @@
 {
     "name": "org1",
     "x-type": "hlfv1",
-    "x-commitTimeout": 300,
+    "x-commitTimeout": 3000,
     "version": "1.0.0",
     "client": {
         "organization": "Org1",
         "connection": {
             "timeout": {
                 "peer": {
-                    "endorser": "300",
-                    "eventHub": "300",
-                    "eventReg": "300"
+                    "endorser": "3000",
+                    "eventHub": "3000",
+                    "eventReg": "3000"
                 },
-                "orderer": "300"
+                "orderer": "3000"
             }
         }
     },
@@ -41,7 +41,8 @@
         "Org2": {
             "mspid": "Org2MSP",
             "peers": [
-                "peer0.org2.example.com"
+                "peer0.org2.example.com",
+                "peer1.org2.example.com"
             ],
             "certificateAuthorities": [
                 "ca.org2.example.com"
@@ -58,10 +59,10 @@
             "url": "grpc://localhost:7051"
         },
         "peer0.org2.example.com": {
-            "url": "grpc://192.168.1.250:7051"
+            "url": "grpc://localhost:8051"
         },
         "peer1.org2.example.com": {
-            "url": "grpc://192.168.1.250:8051"
+            "url": "grpc://localhost:9051"
         }
     },
     "certificateAuthorities": {

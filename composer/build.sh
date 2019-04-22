@@ -19,8 +19,8 @@ rm -rf crypto-config
 cryptogen generate --config=./crypto-config.yaml
 
 # Set public IP addresses host machines
-HOST1="127.0.0.1"
-HOST2="192.168.1.250"
+HOST1="localhost"
+HOST2="localhost"
 
 # Copy the templates and replace the place holders with actual IP address
 cp "${DIR}"/templates/configtx-template.yaml "${DIR}"/configtx.yaml
@@ -28,16 +28,16 @@ sed -i -e "s/{IP-HOST-1}/$HOST1/g" "${DIR}"/configtx.yaml
 
 # Build startFabric script for hosts
 cp ../startFabric-host-template.sh ../startFabric-host2.sh
-sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/startFabric-host2/g" ../startFabric-host2.sh
+sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/docker-compose-host2/g" ../startFabric-host2.sh
 sed -i -e "s/{IP-HOST-1}/$HOST1/g" ../startFabric-host2.sh
 
 # Build stopFabric script for hosts
 cp ../stopFabric-host-template.sh ../stopFabric-host2.sh
-sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/stopFabric-host2/g" ../stopFabric-host2.sh
+sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/docker-compose-host2/g" ../stopFabric-host2.sh
 
 # Build teardownFabric script for hosts
 cp ../teardownFabric-host-template.sh ../teardownFabric-host2.sh
-sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/teardownFabric-host2/g" ../teardownFabric-host2.sh
+sed -i -e "s/{DOCKER-COMPOSE-FILE-NAME}/docker-compose-host2/g" ../teardownFabric-host2.sh
 
 
 # Generate connection profiles
@@ -48,18 +48,18 @@ cat << EOF > ../connection-profiles/org1.json
 {
     "name": "org1",
     "x-type": "hlfv1",
-    "x-commitTimeout": 300,
+    "x-commitTimeout": 3000,
     "version": "1.0.0",
     "client": {
         "organization": "Org1",
         "connection": {
             "timeout": {
                 "peer": {
-                    "endorser": "300",
-                    "eventHub": "300",
-                    "eventReg": "300"
+                    "endorser": "3000",
+                    "eventHub": "3000",
+                    "eventReg": "3000"
                 },
-                "orderer": "300"
+                "orderer": "3000"
             }
         }
     },
@@ -88,7 +88,8 @@ cat << EOF > ../connection-profiles/org1.json
         "Org2": {
             "mspid": "Org2MSP",
             "peers": [
-                "peer0.org2.example.com"
+                "peer0.org2.example.com",
+                "peer1.org2.example.com"
             ],
             "certificateAuthorities": [
                 "ca.org2.example.com"
@@ -105,10 +106,10 @@ cat << EOF > ../connection-profiles/org1.json
             "url": "grpc://localhost:7051"
         },
         "peer0.org2.example.com": {
-            "url": "grpc://${HOST2}:7051"
+            "url": "grpc://${HOST2}:8051"
         },
         "peer1.org2.example.com": {
-            "url": "grpc://${HOST2}:8051"
+            "url": "grpc://${HOST2}:9051"
         }
     },
     "certificateAuthorities": {
@@ -125,18 +126,18 @@ cat << EOF > ../connection-profiles/org2.json
 {
     "name": "org2",
     "x-type": "hlfv1",
-    "x-commitTimeout": 300,
+    "x-commitTimeout": 3000,
     "version": "1.0.0",
     "client": {
         "organization": "Org2",
         "connection": {
             "timeout": {
                 "peer": {
-                    "endorser": "300",
-                    "eventHub": "300",
-                    "eventReg": "300"
+                    "endorser": "3000",
+                    "eventHub": "3000",
+                    "eventReg": "3000"
                 },
-                "orderer": "300"
+                "orderer": "3000"
             }
         }
     },
@@ -165,7 +166,8 @@ cat << EOF > ../connection-profiles/org2.json
         "Org2": {
             "mspid": "Org2MSP",
             "peers": [
-                "peer0.org2.example.com"
+                "peer0.org2.example.com",
+                "peer1.org2.example.com"
             ],
             "certificateAuthorities": [
                 "ca.org2.example.com"
@@ -182,15 +184,15 @@ cat << EOF > ../connection-profiles/org2.json
             "url": "grpc://localhost:7051"
         },
         "peer0.org2.example.com": {
-            "url": "grpc://${HOST2}:7051"
+            "url": "grpc://${HOST2}:8051"
         },
         "peer1.org2.example.com": {
-            "url": "grpc://${HOST2}:8051"
+            "url": "grpc://${HOST2}:9051"
         }
     },
     "certificateAuthorities": {
         "ca.org2.example.com": {
-            "url": "http://${HOST2}:7054",
+            "url": "http://${HOST2}:8054",
             "caName": "ca.org2.example.com"
         }
     }
@@ -210,9 +212,11 @@ echo "ORG2KEY = ${ORG2KEY}"
 
 cp templates/docker-compose-master-template.yml docker-compose-host1.yml
 sed -i -e "s/{ORG1-CA-KEY}/$ORG1KEY/g" "$(pwd)"/docker-compose-host1.yml
+sed -i -e "s/{IP-HOST-2}/$HOST2/g" "${DIR}"/docker-compose-host1.yaml
 
 cp templates/docker-compose-slave-template.yml docker-compose-host2.yml
 sed -i -e "s/{ORG2-CA-KEY}/$ORG2KEY/g" "$(pwd)"/docker-compose-host2.yml
+sed -i -e "s/{IP-HOST-1}/$HOST1/g" "${DIR}"/docker-compose-host2.yaml
 
 rm -f *-e
 rm -f ../*-e

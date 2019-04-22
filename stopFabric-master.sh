@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Exit on first error, print all commands.
-set -e
+set -ev
 
 # Grab the current directorydirectory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

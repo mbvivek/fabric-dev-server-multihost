@@ -19,6 +19,6 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Shut down the Docker containers that might be currently running.
-DOCKER_FILE="${DIR}"/composer/stopFabric-host2.yml
+DOCKER_FILE="${DIR}"/composer/docker-compose-host2.yml
 
 docker-compose -f "${DOCKER_FILE}" stop
