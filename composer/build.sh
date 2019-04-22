@@ -212,11 +212,11 @@ echo "ORG2KEY = ${ORG2KEY}"
 
 cp templates/docker-compose-master-template.yml docker-compose-host1.yml
 sed -i -e "s/{ORG1-CA-KEY}/$ORG1KEY/g" "$(pwd)"/docker-compose-host1.yml
-sed -i -e "s/{IP-HOST-2}/$HOST2/g" "${DIR}"/docker-compose-host1.yaml
+sed -i -e "s/{IP-HOST-2}/$HOST2/g" "${DIR}"/docker-compose-host1.yml
 
 cp templates/docker-compose-slave-template.yml docker-compose-host2.yml
 sed -i -e "s/{ORG2-CA-KEY}/$ORG2KEY/g" "$(pwd)"/docker-compose-host2.yml
-sed -i -e "s/{IP-HOST-1}/$HOST1/g" "${DIR}"/docker-compose-host2.yaml
+sed -i -e "s/{IP-HOST-1}/$HOST1/g" "${DIR}"/docker-compose-host2.yml
 
 rm -f *-e
 rm -f ../*-e
